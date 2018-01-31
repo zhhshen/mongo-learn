@@ -1,0 +1,12 @@
+{% extends "common/layout.html" %}
+{% block head %}
+<link rel="stylesheet/less" type="text/css" href="/home/index.less">
+{% endblock %}
+{% block body %}
+<div id="app">
+    <div class="zh-header">
+        <h3>名称: {{ name }}</h3>
+        <p class="title">创建时间: {{ createTime }}</p>
+    </div>
+</div>
+{% endblock %}

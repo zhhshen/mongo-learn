@@ -1,0 +1,163 @@
+{% extends "common/layout.html" %}
+{% block head %}
+<link rel="stylesheet/less" type="text/css" href="/home/index.less">
+{% endblock %}
+{% block body %}
+<div id="app">
+    <div class="zh-header">
+        <h3>Todo List</h3>
+        <p class="title" v-show="lists.length">今天还有${ lists.length }件事去做, 💪😆😆😆!</p>
+        <div class="form-action clearfix">
+            <div class="edit-input" v-if="editing">
+                <input width="200px" autofocus class="zh-input" type="text" v-model="content" @keyup.enter="onKeyUp">
+            </div>
+            <!-- <a class="zh-btn zh-btn--primary" v-else @click="newRow">新增</a> -->
+        </div>
+    </div>
+
+    <div class="zh-center">
+        <div class="template-table">
+            <table>
+                <thead>
+                    <tr>
+                        <!-- <th>
+                            <div class="checkbox">
+                                <input type="checkbox" :checked="allChecked"/>
+                            </div>
+                        </th> -->
+                        <th>名称</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(t, inx) in lists" :key="t.id" v-if="lists.length">
+                        <!-- <td width="10%">
+                            <div class="checkbox">
+                                <input type="checkbox" :checked="t._checked" />
+                            </div>
+                        </td> -->
+                        <td>
+                            <span>${ t.name  }</span>
+                        </td>
+                        <td>
+                            <span>${ t.createTime }</span>
+                        </td>
+                        <td>
+                            <a class="edit-btn read" :href="'/detail/'+ t._id">查看</a>
+                            <a class="edit-btn remove" @click="removeRow(t._id)">移除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="zh-alert" :class="className" v-show="alert.show">
+        <div class="zh-alert--body">
+            ${ alert.text }
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<script>
+    var vm = new Vue({
+        delimiters: ['${', '}'],
+        el: '#app',
+        data: {
+            lists: [],
+            cache: {},
+            content: '',
+            editing: true,
+            alert: {
+                show: false,
+                text: '',
+                type: 'success',
+                time: 3000
+            },
+            timer: null
+        },
+
+        computed: {
+            className () {
+                return `zh-alert--${this.alert.type}`
+            }
+        },
+
+        watch: {
+            'alert.show' (curr) {
+                if (curr) {
+                    if (this.timer) {
+                        clearTimeout(this.timer)
+                    }
+                    this.timer = setTimeout(() => {
+                        this.alert.show = false
+                    }, this.alert.time)
+                }
+            }
+        },
+
+        created() {
+            this.asyncList()
+        },
+
+        methods: {
+            asyncList() {
+                axios.get('/api/list').then(res => {
+                    let result = res.data
+                    this.lists = result.data
+                })
+            },
+
+            newRow () {
+                if (this.editing) return
+                this.editing = true
+            },
+
+            onKeyUp () {
+                let text = this.content
+                if (!text) {
+                    this.showToast('todo is empty !')
+                    return false
+                }
+                this.createRow(text)
+            },
+
+            createRow (text) {
+                let params = {
+                    name: text
+                }
+                axios.get('/api/list/add', {
+                    params
+                }).then(res => {
+                    let data = res.data
+                    this.clearData()
+                    this.showToast(data.message)
+                    this.asyncList()
+                })
+            },
+
+            clearData () {
+                this.editing = true
+                this.content = ''
+            },
+
+            removeRow (id) {
+                let params = { id }
+                axios.get('/api/list/remove', {
+                    params
+                }).then(res => {
+                    let data = res.data
+                    this.showToast(data.message)
+                    this.asyncList()
+                })
+            },
+
+            showToast (text = '', type = 'success', show = true, time = 3000) {
+                this.alert = { show, text, type, time }
+            }
+        }
+    })
+</script>
+{% endblock %}

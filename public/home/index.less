@@ -1,0 +1,157 @@
+@baseBackground: #fff;
+@baseColor: #333;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 14px;
+    line-height: 1;
+    color: @baseColor;
+    background: @baseBackground;
+}
+.clearfix {
+    zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+}
+#app {
+    width: 85%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 30px;
+    max-width: 1024px;
+}
+.zh-header {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
+    .title {
+        padding: 16px;
+        font-size: 16px;
+    }
+    .form-action {
+        margin-top: 24px;
+        .zh-btn {
+            float: right;
+        }
+    }
+}
+
+.zh-center {
+}
+
+.zh-input {
+    display: inline-block;
+    padding: 0px 16px;
+    outline: none;
+    border: 0;
+    line-height: 38px;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+.zh-alert {
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    padding: 8px 16px 8px 32px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, .65);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    &--success {
+        border: 1px solid #b7eb8f;
+        background-color: #f6ffed;
+    }
+    &--info {
+        border: 1px solid #91d5ff;
+        background-color: #e6f7ff;
+    }
+    &--warn {
+        border: 1px solid #ffe58f;
+        background-color: #fffbe6;
+    }
+    &--error {
+        border: 1px solid #ffa39e;
+        background-color: #fff1f0;
+    }
+}
+
+.zh-btn {
+    position: relative;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    -webkit-appearance: none;
+    cursor: pointer;
+    &--default {
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+    }
+    &--primary {
+        color: #fff;
+        background-color: #4b0;
+        border: 1px solid #0a0;
+    }
+    &--danger {
+        color: #fff;
+        background-color: #f44;
+        border: 1px solid #e33;
+    }
+}
+
+.template-table {
+    table {
+        width: 100%;
+        background: #fafafa;
+    }
+
+    td,
+    th {
+        text-align: center;
+        transition: background 0.3s ease;
+        color: rgba(0,0,0,.85);
+        font-weight: 500;
+        border-bottom: 1px solid #e8e8e8;
+        padding: 16px;
+        word-break: break-all;
+        transition: all 0.3s;
+    }
+
+    .checkbox {
+        cursor: pointer;
+        position: relative;
+
+        input {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 16px;
+            height: 16px;
+        }
+    }
+    .edit-btn {
+        color: #1890ff;
+        cursor: pointer;
+    }
+}
