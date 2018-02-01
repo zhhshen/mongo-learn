@@ -24,7 +24,7 @@ module.exports = (app) => {
         path: path.join(__dirname, '../views'), // 指定视图目录
         nunjucksConfig: {
             trimBlocks: true, // 开启转义 防Xss
-            noCache: false // 不使用缓存
+            noCache: true // 不使用缓存
         },
     }));
     app.use(bodyParser())
