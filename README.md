@@ -3,6 +3,7 @@
 
 本项目主要是对koa2的练手项目，结合koa常用的中间件，node上传图片到七牛服务器，数据存储mongo等等
 
+
 项目中引入的config.js文件内容如下
 
 ```javascript
