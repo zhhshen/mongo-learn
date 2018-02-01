@@ -1,0 +1,102 @@
+{% extends "common/layout.html" %}
+{% block head %}
+<link rel="stylesheet/less" type="text/css" href="/home/index.less">
+{% endblock %}
+{% block body %}
+<div id="app">
+    <div class="zh-header">
+        <h3>上传图片</h3>
+        <p class="title" v-show="lists.length">上传图片到七牛</p>
+        <div class="form-action clearfix">
+            <a class="zh-btn zh-btn--primary">
+                上传图片
+                <input class="native-input-file" type="file" name="file" @change="onChangeFile"/>
+            </a>
+        </div>
+    </div>
+
+    <div class="zh-center">
+        <img :src="fileUrl" alt="">
+    </div>
+
+    <div class="zh-alert" :class="className" v-show="alert.show">
+        <div class="zh-alert--body">
+            ${ alert.text }
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<script>
+    var vm = new Vue({
+        delimiters: ['${', '}'],
+        el: '#app',
+        data: {
+            lists: [],
+            cache: {},
+            content: '',
+            editing: true,
+            alert: {
+                show: false,
+                text: '',
+                type: 'success',
+                time: 3000
+            },
+            timer: null,
+            file: null,
+            fileUrl: ''
+        },
+
+        computed: {
+            className () {
+                return `zh-alert--${this.alert.type}`
+            }
+        },
+
+        watch: {
+            'alert.show' (curr) {
+                if (curr) {
+                    if (this.timer) {
+                        clearTimeout(this.timer)
+                    }
+                    this.timer = setTimeout(() => {
+                        this.alert.show = false
+                    }, this.alert.time)
+                }
+            }
+        },
+
+        created() {
+        },
+
+        methods: {
+            onChangeFile (e) {
+                this.file = e.target.files[0]
+                console.log(this.file)
+                if (this.file) {
+                    this.uploadFile()
+                }
+            },
+
+            uploadFile () {
+                let _formData = new FormData()
+                _formData.append('file', this.file)
+                axios.post('/api/upload', _formData, {
+                    headers: {
+                        'Content-type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                    let result = res.data
+                    if (result.status === 0) {
+                        this.fileUrl = result.data.imgUrl
+                    }
+                })
+            },
+
+            showToast (text = '', type = 'success', show = true, time = 3000) {
+                this.alert = { show, text, type, time }
+            }
+        }
+    })
+</script>
+{% endblock %}

@@ -33,25 +33,51 @@ body {
     max-width: 1024px;
 }
 .zh-header {
-    padding: 40px 0;
     text-align: center;
-    font-size: 24px;
-    font-weight: 400;
+    padding: 40px 0;
+    h3 {
+        font-size: 24px;
+    }
     .title {
-        padding: 16px;
         font-size: 16px;
+        padding: 16px 0;
     }
     .form-action {
         margin-top: 24px;
-        .zh-btn {
-            float: right;
+        .native-input-file {
+            position: absolute;
+            display: inline-block;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            opacity: 0;
+            cursor: pointer;
         }
     }
 }
-
 .zh-center {
-}
+    .code-item {
+        li {
+            float: left;
+            list-style: none;
 
+            border-radius: 4px;
+            border: 0;
+            background-color: #f9f9fa;
+            margin: 0 8px;
+            a {
+                display: inline-block;
+                padding: 24px 32px;
+                vertical-align: middle;
+                text-decoration: none;
+                color: #444;
+            }
+        }
+    }
+}
 .zh-input {
     display: inline-block;
     padding: 0px 16px;
